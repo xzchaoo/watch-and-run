@@ -1,0 +1,44 @@
+# root 描述要监控的根目录
+# 如果 root 为空, 则监听当前工作目录
+# 如果 root 是绝对路径, 则直接监听它
+# 如果 root 以 cfg: 开头, 则取相对 config file 所在的目录的相对路径
+# 如果 root 以 env: 开头, 则取对应的环境变量作为 root
+root = "cfg:../.."
+
+# build 可选, 描述如何构建程序
+# build 可以是 string 或 []string
+build = "$WAR_CFG_DIR/build.sh"
+
+# run 必填, 描述如何运行程序
+# run 可以是 string 或 []string
+run = "$WAR_CFG_DIR/run.sh"
+
+# 发现变化之后延迟 1 秒开始构建. 在此期间内, 如果又发现新的变化, 那么重新开始计时
+delay = "1s"
+
+# 控制是否取消上次未完成的 build&run
+cancel_last = true
+
+# 先发送 SIGTERM 信号, 如果目标进程组没有在 term_timeout 时间内停止, 就发送 SIGKILL 信号
+term_timeout = "1s"
+
+# 需要监听的文件的扩展名
+include_exts = [".go", ".sh", ".java"]
+
+# 需要忽略的文件/目录, 使用跟 .gitignore 相同的语法
+ignore_rules = [
+    "*.txt",
+    "*.md",
+    "benchmarks/",
+    "output/",
+]
+
+#ignore_rules = '''
+#*.sh
+#*.md
+#benchmarks
+#'''
+
+# 对 build 和 run 命令可见的环境变量
+[env]
+foo = "bar"

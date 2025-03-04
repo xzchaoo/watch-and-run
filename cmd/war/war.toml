@@ -1,0 +1,23 @@
+root = "cfg:../.."
+
+run = ["$WAR_CFG_DIR/run.sh", "date"]
+#run = ["$WAR_CFG_DIR/run.sh"]
+# delay = "1s"
+# cancel_last = true
+include_exts = [".go", ".sh", ".txt"]
+# term_timeout = "3s"
+ignore_rules = [
+    "*.sh",
+    "*.md",
+    "benchmarks/",
+    "output/",
+]
+
+#[env]
+#foo = "bar"
+
+#ignore_rules = '''
+#*.sh
+#*.md
+#benchmarks
+#'''
