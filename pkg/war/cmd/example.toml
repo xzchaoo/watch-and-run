@@ -1,31 +1,38 @@
-# root 描述要监控的根目录
-# 如果 root 为空, 则监听当前工作目录
-# 如果 root 是绝对路径, 则直接监听它
-# 如果 root 以 cfg: 开头, 则取相对 config file 所在的目录的相对路径
-# 如果 root 以 env: 开头, 则取对应的环境变量作为 root
+# root: watch root dir
+# If root is empty, then watch Current Working Directory.
+# If root is in the form of "cfg:FOO", then `filepath.join(cfgFileDir, FOO)` will be used as the value of root.
+# If root is in the form of "env:FOO", then the environment variable FOO will be used as the value of root.
+# if root is an abs path, then watch it.
 root = "cfg:../.."
 
-# build 可选, 描述如何构建程序
-# build 可以是 string 或 []string
+# build is optional, which is a step preceding the run step.
+# build can be string or []string
 build = "$WAR_CFG_DIR/build.sh"
 
-# run 必填, 描述如何运行程序
-# run 可以是 string 或 []string
+# run is a required, which describes how to run the program.
+# run can be string or []string
 run = "$WAR_CFG_DIR/run.sh"
 
-# 发现变化之后延迟 1 秒开始构建. 在此期间内, 如果又发现新的变化, 那么重新开始计时
+# The interval time for function debouncing.
+# delay defaults to 1s
 delay = "1s"
 
-# 控制是否取消上次未完成的 build&run
+# If cancel_last is true, when a file change is detected, the last ongoing running will be cancelled.
+# If cancel_last is false, it will wait until the last ongoing running process finishes before it starts execution.
+# cancel_last defaults to true
 cancel_last = true
 
-# 先发送 SIGTERM 信号, 如果目标进程组没有在 term_timeout 时间内停止, 就发送 SIGKILL 信号
+# If the SIGTERM signal fails to stop the run process group within the specified time, then the SIGKILL signal will be sent to the run process group.
+# If term_timeout is zero, then the SIGKILL signal will be sent directly to the run process group.
+# term_timeout defaults to 1s
 term_timeout = "1s"
 
-# 需要监听的文件的扩展名
+# The file extensions of the files that need to be monitored.
+# An empty value indicates no filtering. It is recommended to fill in this field.
 include_exts = [".go", ".sh", ".java"]
 
-# 需要忽略的文件/目录, 使用跟 .gitignore 相同的语法
+# Files/directories to be ignored, using the same syntax as .gitignore.
+# It is recommended to fill in this field.
 ignore_rules = [
     "*.txt",
     "*.md",
@@ -39,6 +46,6 @@ ignore_rules = [
 #benchmarks
 #'''
 
-# 对 build 和 run 命令可见的环境变量
+# envs that are visible to 'build' and 'run' command
 [env]
 foo = "bar"

@@ -18,14 +18,30 @@ import (
 	"time"
 )
 
+// config file path
 var cfgPath string
+
+// watch root dir
 var fRoot string
+
+// run commands
 var fRun []string
+
+// Auto mode: the idea that convention takes precedence over configuration.
 var fAuto bool
 var fLogLevel int
 var fIgnore []string
+
+// The fDelay parameter is used to implement function debouncing.
+// If more than one file change is detected within a short period of time, they will be merged into a single change.
 var fDelay time.Duration
+
+// If fCancelLast is true, when a file change is detected, the last ongoing running will be cancelled.
+// If fCancelLast is false, it will wait until the last ongoing running process finishes before it starts execution.
 var fCancelLast bool
+
+// If the SIGTERM signal fails to stop the run process group within the specified time, then the SIGKILL signal will be sent to the run process group.
+// If fTermTimeout is zero, then the SIGKILL signal will be sent directly to the run process group.
 var fTermTimeout time.Duration
 
 var rootCmd = &cobra.Command{
@@ -101,7 +117,7 @@ var rootCmd = &cobra.Command{
 		})...)
 
 		if fAuto {
-			// 自动模式
+			// auto mode
 			{
 				path := filepath.Join(root, ".gitignore")
 				if bs, err := os.ReadFile(path); err == nil {
