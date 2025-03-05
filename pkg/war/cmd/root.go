@@ -188,9 +188,9 @@ func init() {
 	rootCmd.Flags().BoolVarP(&fAuto, "auto", "", false, "auto mode")
 	rootCmd.Flags().IntVarP(&fLogLevel, "log-level", "l", 1, "log level (0: silent, 1: log file changes, 9: log all)")
 	rootCmd.Flags().StringSliceVarP(&fIgnore, "ignore", "i", nil, "ignore pattern")
-	rootCmd.Flags().DurationVarP(&fDelay, "delay", "d", 0, "run delay")
-	rootCmd.Flags().BoolVarP(&fAuto, "cancel-last", "", false, "cancel the last run if it has not already been stopped")
-	rootCmd.Flags().DurationVarP(&fTermTimeout, "term-timeout", "", 0, "SIGTERM timeout")
+	rootCmd.Flags().DurationVarP(&fDelay, "delay", "d", time.Second, "run delay")
+	rootCmd.Flags().BoolVarP(&fAuto, "cancel-last", "", true, "cancel the last run if it has not already been stopped")
+	rootCmd.Flags().DurationVarP(&fTermTimeout, "term-timeout", "", time.Second, "SIGTERM timeout")
 }
 
 func Execute() {
